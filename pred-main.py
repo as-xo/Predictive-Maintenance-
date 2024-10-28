@@ -90,3 +90,41 @@ print(classification_report(y_test, y_pred))
 conf_matrix = confusion_matrix(y_test, y_pred)
 print("Confusion Matrix:")
 print(conf_matrix)
+
+
+# Plot the confusion matrix as a heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['No Failure', 'Failure'], yticklabels=['No Failure', 'Failure'])
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+
+
+# Get feature importances from the model
+feature_importances = model.feature_importances_
+features = np.array(['Vibration Level', 'Temperature', 'Motor Speed'])
+
+# Plot feature importances
+plt.figure(figsize=(10, 6))
+sns.barplot(x=features, y=feature_importances)
+plt.title('Feature Importance')
+plt.xlabel('Feature')
+plt.ylabel('Importance')
+plt.show()
+
+
+# Combine predictions and actual values into a DataFrame
+results_df = X_test.copy()
+results_df['Actual'] = y_test.values
+results_df['Predicted'] = y_pred
+
+# Plot predictions vs actual
+plt.figure(figsize=(14, 6))
+plt.plot(results_df.index, results_df['Actual'], label='Actual Failures', color='red', linestyle='--')
+plt.plot(results_df.index, results_df['Predicted'], label='Predicted Failures', color='green', linestyle=':')
+plt.title('Predicted vs Actual Failures')
+plt.xlabel('Index')
+plt.ylabel('Failure Status')
+plt.legend()
+plt.show()
